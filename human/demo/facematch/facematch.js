@@ -56,9 +56,13 @@ function title(msg) {
 
 async function loadFaceMatchDB(a) {
   // download db with known faces
+  const folder1=`/demo/facematch/embeddings/`;
+  const folder2='/human/demo/facematch/embeddings/';
+  const loc1=folder1+a;
+  const loc2=folder2+a;
   try {
-    let res = await fetch(`/demo/facematch/embeddings/a.einstein.json`);
-    if (!res || !res.ok) res = await fetch(`/human/demo/facematch/embeddings/a.einstein.json`);
+    let res = await fetch(loc1);
+    if (!res || !res.ok) res = await fetch(loc2);
     db = (res && res.ok) ? await res.json() : [];
     log('Loaded Faces DB:', db);
   } catch (err) {
@@ -206,7 +210,8 @@ async function main() {
   let images = [];
   let dir = [];
   // load face descriptor database
-  await loadFaceMatchDB();
+  const a='a.einstein.json';
+  await loadFaceMatchDB(a);
 
   // enumerate all sample images in /assets
 
