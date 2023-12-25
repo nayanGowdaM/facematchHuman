@@ -202,6 +202,8 @@ function createFaceMatchDB() {
   log(db);
 }
 
+
+
 async function main() {
   // pre-load human models
   await human.load();
@@ -210,7 +212,8 @@ async function main() {
   let images = [];
   let dir = [];
   // load face descriptor database
-  const a='a.einstein.json';
+  const name = prompt('Enter your name:');
+  const a=name+'.json';
   await loadFaceMatchDB(a);
 
   // enumerate all sample images in /assets
