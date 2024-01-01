@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Capture</title>
+</head>
+<body>
+
+<h1>Image Capture</h1>
+
+<video id="video" width="640" height="480" autoplay></video>
+<button id="captureBtn">Capture Image</button>
+<canvas id="canvas" width="640" height="480"></canvas>
+<img id="capturedImage" alt="Captured Image">
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const capturedImage = document.getElementById('capturedImage');
+  const captureBtn = document.getElementById('captureBtn');
+
+  // Check for getUserMedia support
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        // Set video source to the user's camera stream
+        video.srcObject = stream;
+      })
+      .catch(function (error) {
+        console.error('Error accessing camera:', error);
+      });
+  }
+
+  captureBtn.addEventListener('click', function() {
+    // Draw the current frame from the video onto the canvas
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Convert the canvas content to a data URL representing a JPEG image
+    const imageDataURL = canvas.toDataURL('image/jpeg');
+
+    // Set the captured image source
+    capturedImage.src = imageDataURL;
+
+    // Create a link element and trigger a download
+    const link = document.createElement('a');
+    link.href = imageDataURL;
+    link.download = 'captured.jpg';
+    link.click();
+    window.location.href = '../facematch/index.html';
+  });
+});
+</script>
+
+</body>
+</html>
